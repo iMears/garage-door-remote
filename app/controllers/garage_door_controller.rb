@@ -3,14 +3,11 @@ class GarageDoorController < ApplicationController
 	RELAY_PIN = 2
 	PIZO_PIN = 3
 	LED_PIN = 6
-
-  def index
-    render json: { 'status' => 'kool' }
-  end
+	DOOR_SENSOR = 12
 
 	def self.new_connection
 		arduino = ArduinoFirmata.connect
-		arduino.pin_mode 12, ArduinoFirmata::INPUT
+		arduino.pin_mode DOOR_SENSOR, ArduinoFirmata::INPUT # Set door sensor to be an input pin
 		return arduino
 	end
 
@@ -23,9 +20,9 @@ class GarageDoorController < ApplicationController
 	end
 
 	def status
-		status = self.class.arduino.digital_read(12)
-		render json: { garage_door_closed: status }
-	end
+		garage_door_closed = self.class.arduino.digital_read(DOOR_SENSOR)
+    render json: { garage_door_closed: garage_door_closed }
+  end
 
 	def press
 		begin
