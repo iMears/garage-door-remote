@@ -64,7 +64,7 @@ class GarageDoorController < ApplicationController
 
 			render json: {'status' => 'success'}
 		rescue => e
-			render json: {'status' => 'error', error: e.message}
+			render json: {'status' => 'error', message: e.message}
 		end
 	end
 
