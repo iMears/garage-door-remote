@@ -35,7 +35,7 @@ class GarageDoorController < ApplicationController
 				arduino = self.class.arduino
 				arduino.digital_write RELAY_PIN, true
 				arduino.digital_write LED_PIN, true
-				# arduino.analog_write PIZO_PIN, 128
+				arduino.analog_write PIZO_PIN, 128 if params[:pizo]
 				sleep 0.1
 				arduino.digital_write RELAY_PIN, false
 
@@ -44,18 +44,18 @@ class GarageDoorController < ApplicationController
 						sleep 0.4
 						Thread.handle_interrupt(Exception => :never) do
 							arduino.digital_write LED_PIN, false
-							# arduino.digital_write PIZO_PIN, false
+							arduino.digital_write PIZO_PIN, false if params[:pizo]
 						end
 						2.times do
 							sleep 0.5
 							Thread.handle_interrupt(Exception => :never) do
 								arduino.digital_write LED_PIN, true
-								# arduino.analog_write PIZO_PIN, 128
+								arduino.digital_write PIZO_PIN, 128 if params[:pizo]
 							end
 							sleep 0.5
 							Thread.handle_interrupt(Exception => :never) do
 								arduino.digital_write LED_PIN, false
-								# arduino.digital_write PIZO_PIN, false
+								arduino.digital_write PIZO_PIN, false if params[:pizo]
 							end
 						end
 					end
@@ -69,6 +69,6 @@ class GarageDoorController < ApplicationController
 	end
 
 	def garage_door_params
-		 params.require(:garage_door).permit(:pizo)
+		params.require(:garage_door).permit(:pizo)
 	end
 end
