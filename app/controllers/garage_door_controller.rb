@@ -50,7 +50,7 @@ class GarageDoorController < ApplicationController
 							sleep 0.5
 							Thread.handle_interrupt(Exception => :never) do
 								arduino.digital_write LED_PIN, true
-								arduino.digital_write PIZO_PIN, 128 if params[:pizo]
+								arduino.analog_write PIZO_PIN, 128 if params[:pizo]
 							end
 							sleep 0.5
 							Thread.handle_interrupt(Exception => :never) do
